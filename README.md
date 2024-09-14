@@ -20,6 +20,8 @@ Neste Script você encontrará a instalação completo do Docker, e a criação 
 - **Criação de Containers para Bancos de Dados**: Cria e configura containers para MySQL, PostgreSQL e MariaDB, deixando-os pronto para uso.
 - **Backup de Bancos de Dados**: Realiza backups de bancos de dados MySQL, PostgreSQL e MariaDB.
 - **Restauração de Bancos de Dados**: Restaura bancos de dados MySQL, PostgreSQL e MariaDB a partir de arquivos de backup, criando novos containers ou reaproveitando antigos.
+- **Aplicação de limite de conexões a containers utilizando Firewall UFW.
+- **Aplicação de bloqueio de IP's a containers utilziando Firewall UFW.
 
 ## Pré-requisitos
 
@@ -30,13 +32,13 @@ Neste Script você encontrará a instalação completo do Docker, e a criação 
 ### 1. Clonar o Repositório
 
 ```bash
-git clone https://github.com/Krittz/assistente-de-implantacao-de-servidores.git
-cd assistente-de-implantacao-de-servidores/
+git clone https://github.com/Krittz/script-automacao-implantacao-servicos-docker.git
+cd script-automacao-implantacao-servicos-docker/
 ```
 ou
 ```bash
-git clone git@github.com:Krittz/assistente-de-implantacao-de-servidores.git
-cd assistente-de-implantacao-de-servidores/
+git clone git@github.com:Krittz/script-automacao-implantacao-servicos-docker.git
+cd script-automacao-implantacao-servicos-docker/
 ```
 ### 2. Conceder permissão de execução
 
