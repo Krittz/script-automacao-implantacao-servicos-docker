@@ -20,8 +20,8 @@ Neste Script você encontrará a instalação completo do Docker, e a criação 
 - **Criação de Containers para Bancos de Dados**: Cria e configura containers para MySQL, PostgreSQL e MariaDB, deixando-os pronto para uso.
 - **Backup de Bancos de Dados**: Realiza backups de bancos de dados MySQL, PostgreSQL e MariaDB.
 - **Restauração de Bancos de Dados**: Restaura bancos de dados MySQL, PostgreSQL e MariaDB a partir de arquivos de backup, criando novos containers ou reaproveitando antigos.
-- **Aplicação de limite de conexões a containers utilizando Firewall UFW.
-- **Aplicação de bloqueio de IP's a containers utilziando Firewall UFW.
+- **Aplicação de Firewall** Limitar as conexões aos containers utilizando o UFW.
+- **Aplicação Firewall**: Utilizando UFW para bloquear acesso a IP's selecionados para containes.
 
 ## Pré-requisitos
 
