@@ -2329,6 +2329,6 @@ echo -e ""
 echo -e "★ Autor:       Cristian Alves Silva"
 echo -e "★ Orientador:  Prof. Dr. Claiton Luiz Soares"
 echo -e "★ Curso:       Tecnologia em Análise e Desenvolvimento de Sistemas"
-echo -e "★ Título:      Assistente de implantação de servidores em Docker"
+echo -e "★ Título:      Assistente de implantação de Serviços em Docker"
 
 main_menu
