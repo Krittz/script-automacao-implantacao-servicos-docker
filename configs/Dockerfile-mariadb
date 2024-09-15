@@ -1,0 +1,7 @@
+FROM mariadb:latest
+# Definir variáveis de ambiente para o MariaDB
+ENV MARIADB_ROOT_PASSWORD=calangos
+ENV MARIADB_USER=cristian
+ENV MARIADB_PASSWORD=calangos
+# Expor a porta padrão do MariaDB
+EXPOSE 3307

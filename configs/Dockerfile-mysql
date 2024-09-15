@@ -1,0 +1,7 @@
+FROM mysql:latest
+# Definir variáveis de ambiente para o MySQL
+ENV MYSQL_ROOT_PASSWORD=calangos
+ENV MYSQL_USER=cristian
+ENV MYSQL_PASSWORD=calangos
+# Expor a porta padrão do MySQL
+EXPOSE 3306

@@ -17,8 +17,7 @@ function check_docker_installed() {
     if ! command -v docker &>/dev/null; then
 
         echo -e "${NL}${WARNING}┍━━ ⚠  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑${NC}"
-        echo -e "  Docker não está instalado. ${NL}  Por favor, 
-        instale antes de prosseguir"
+        echo -e "  Docker não está instalado. ${NL}  Por favor, instale antes de prosseguir"
         echo -e "${WARNING}┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ ⚠  ━━━━━━━┙${NC}${NL}"
         sleep 1
         return 1
@@ -1096,14 +1095,15 @@ function reverse_proxy_apache() {
     ProxyPreserveHost On
     ProxyPass / $upstream_url
     ProxyPassReverse / $upstream_url
+    SSLProxyEngine on
     ErrorLog \${APACHE_LOG_DIR}/error.log
     CustomLog \${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 EOF
     cat >configs/Dockerfile-apache <<EOF
 FROM debian:latest
-MAINTAINER SeuNome "seuemail@example.com"
-ENV DEBIAN_FRONTEND noninteractive
+LABEL maintainer="Cristian Alves <cristian@gmail.com>"
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \\
     && apt-get -y install apache2 \\
     && apt-get clean \\
@@ -1390,7 +1390,15 @@ EOF
         echo -e "  ${MAGENTA}🜙 ${NC}SFTP: ${BOLD}VSFTPD${NC}"
         echo -e "  ${MAGENTA}🜙 ${NC}Porta: ${BOLD}$suggested_port${NC}"
         echo -e "  ${MAGENTA}🜙 ${NC}Usuário: ${BOLD}$sftp_user${NC}"
+        echo -e "  ${MAGENTA}🜙 ${NC}Comando: ${BOLD}sftp -P $suggested_port $sftp_user@localhost${NC}"
         echo -e "${SUCCESS}┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ ✓  ━━━━━━━┙${NC}${NL}"
+
+        echo -e "${WARNING}┍━━ ⚠  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑${NC}"
+        echo -e "  ATENÇÃO: Se você recebeu um aviso de chave antiga ao se conectar,"
+        echo -e "  execute o seguinte comando para remover a chave antiga do known_hosts:"
+        echo -e "  ssh-keygen -f '/home/seu_usuario/.ssh/known_hosts -R' '[localhost]:$suggested_port'"
+        echo -e "${WARNING}┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ ⚠  ━━━━━━━┙${NC}${NL}"
+
         sleep 0.3
         main_menu
     else
@@ -1462,16 +1470,16 @@ FROM debian:latest
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-server \
     && mkdir /var/run/sshd \
-    && useradd -m cristian \
-    && echo "cristian:calangos" | chpasswd \
-    && chown root:root /home/cristian \
-    && chmod 755 /home/cristian \
-    && mkdir /home/cristian/upload \
-    && chown cristian:cristian /home/cristian/upload \
+    && useradd -m $sftp_user \
+    && echo "$sftp_user:$sftp_password" | chpasswd \
+    && chown root:root /home/$sftp_user \
+    && chmod 755 /home/$sftp_user \
+    && mkdir /home/$sftp_user/upload \
+    && chown $sftp_user:$sftp_user /home/$sftp_user/upload \
     && echo "Subsystem sftp internal-sftp" >> /etc/ssh/sshd_config
 
 COPY configs/sshd_config /etc/ssh/sshd_config
-VOLUME /home/cristian
+VOLUME /home/$sftp_user
 EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
 EOF
@@ -1493,13 +1501,24 @@ EOF
         sftp-image
 
     if [ $? -eq 0 ]; then
+
+
         echo -e "${NL}${SUCCESS}┍━━ ✓  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑${NC}"
         echo -e "  Container '${container_name}' criado e executando na porta $suggested_port."
         echo -e "  ${MAGENTA}🜙 ${NC}Container: ${BOLD}$container_name${NC}"
         echo -e "  ${MAGENTA}🜙 ${NC}SFTP: ${BOLD}OpenSSH${NC}"
         echo -e "  ${MAGENTA}🜙 ${NC}Porta: ${BOLD}$suggested_port${NC}"
         echo -e "  ${MAGENTA}🜙 ${NC}Usuário: ${BOLD}$sftp_user${NC}"
+        echo -e "  ${MAGENTA}🜙 ${NC}Comando: ${BOLD}sftp -P $suggested_port $sftp_user@localhost${NC}"
         echo -e "${SUCCESS}┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ ✓  ━━━━━━━┙${NC}${NL}"
+        
+        echo -e "${WARNING}┍━━ ⚠  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑${NC}"
+        echo -e "  ATENÇÃO: Se você recebeu um aviso de chave antiga ao se conectar,"
+        echo -e "  execute o seguinte comando para remover a chave antiga do known_hosts:"
+        echo -e "  ssh-keygen -f '/home/seu_usuario/.ssh/known_hosts -R' '[localhost]:$suggested_port'"
+        echo -e "${WARNING}┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ ⚠  ━━━━━━━┙${NC}${NL}"
+
+
         sleep 0.3
         main_menu
     else
@@ -1509,6 +1528,7 @@ EOF
         return 1
     fi
 }
+
 # --->>> //OpenSSH <<<---
 
 # --->>> Firewall <<<---
